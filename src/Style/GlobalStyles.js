@@ -8,4 +8,12 @@ export default createGlobalStyle`
     * {
         box-sizing:boarder-box;
     }
+    body {
+        background-color:${props => props.theme.bgColor};
+        color:${props => props.theme.blackColor};
+    }
+    a {
+        color:${props => props.theme.blueColor};
+        text-decoreation: none;
+    }
 `;
