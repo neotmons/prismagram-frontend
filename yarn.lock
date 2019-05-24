@@ -8235,7 +8235,7 @@ react-dev-utils@^9.0.1:
     strip-ansi "5.2.0"
     text-table "0.2.0"
 
-react-dom@^16.8.6:
+react-dom@^16.7.0-alpha.2, react-dom@^16.8.6:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.8.6.tgz#71d6303f631e8b0097f56165ef608f051ff6e10f"
   integrity sha512-1nL7PIq9LTL3fthPqwkvr2zY7phIPjYrT0jp4HjyEQrEROnw4dG41VVwi/wfoCneoleqrNX7iAD+pXebJZwrwA==
@@ -8264,6 +8264,14 @@ react-helmet@^5.2.1:
     prop-types "^15.5.4"
     react-fast-compare "^2.0.2"
     react-side-effect "^1.1.0"
+
+react-hookedup@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/react-hookedup/-/react-hookedup-0.1.0.tgz#07e7ec7e460e60e3f472b8e8302fde53f03ba427"
+  integrity sha512-yp8jIeyGhTSS975Epq7gGspMsII76Gep8G9K74K/Srxnluu1rSkoBJBc4TGgPEtchwkKQxywbMLhD4mK4RXi0Q==
+  dependencies:
+    react "^16.7.0-alpha.2"
+    react-dom "^16.7.0-alpha.2"
 
 react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4:
   version "16.8.6"
@@ -8392,7 +8400,7 @@ react-transition-group@^2.6.1:
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
 
-react@^16.8.6:
+react@^16.7.0-alpha.2, react@^16.8.6:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react/-/react-16.8.6.tgz#ad6c3a9614fd3a4e9ef51117f54d888da01f2bbe"
   integrity sha512-pC0uMkhLaHm11ZSJULfOBqV4tIZkx87ZLvbbQYunNixAAvjnC+snJCg0XQXn9VIsttVsbZP/H/ewzgsd5fxKXw==
