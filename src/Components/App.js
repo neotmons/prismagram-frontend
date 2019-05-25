@@ -2,6 +2,9 @@ import React from 'react';
 import { gql } from "apollo-boost";
 import { useQuery } from "react-apollo-hooks";
 import styled, {ThemeProvider} from "styled-components";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import Theme from "../Style/Theme";
 import GlobalStyles from "../Style/GlobalStyles";
 import Router from "./Router";
@@ -29,6 +32,7 @@ export default () => {
         <GlobalStyles />
         <Router isLoggedIn={isLoggedIn} />
         <Footer />
+        <ToastContainer position={toast.POSITION.BOTTOM_LEFT} />
       </Wrapper>
     </ThemeProvider>
   );
