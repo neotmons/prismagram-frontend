@@ -1,7 +1,10 @@
 import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
+import { useMutation } from "react-apollo-hooks";
 import useInput from "../../Hooks/useInput";
 import PostPresenter from "./PostPresenter";
+import { TOGGLE_LIKE, ADD_COMMENT} from "./PostQueries";
+import { toast } from "react-toastify";
 
 const PostContainer = ({
     id, 
@@ -19,6 +22,13 @@ const PostContainer = ({
         const [currentItem, setCurrentItem ] = useState(0);
         const comment = useInput("");
 
+        const toggleLikeMutation = useMutation(TOGGLE_LIKE, {
+            variables: {postId: id}});
+        const addCommentMutation = useMutation(ADD_COMMENT, {
+            variables: {postId: id, text: comment.value }
+        });
+        
+
         const slide = () => {
             const totalFiles = files.length;
             if(currentItem === totalFiles-1){
@@ -31,6 +41,34 @@ const PostContainer = ({
         useEffect(() => {
             slide();
         }, [currentItem]);
+
+        const toggleLike = async() => {
+            if(isLikedS === true){
+                setIsLiked(false);                
+                setLikeCount(likeCountS - 1);
+            } else  {
+                setIsLiked(true);
+                setLikeCount(likeCountS + 1);
+            }
+
+            try{
+                await toggleLikeMutation();                   
+            }catch{
+                setIsLiked(!isLikedS)
+                toast.error("Can't register Like");
+            }
+            console.log(`toggleLike : isLiked - ${isLiked}`)
+        }
+
+
+    const onKeyPress = e => {
+        const {keyCode} = e;
+        e.preventDefault();
+        if(keyCode === 13){            
+            comment.setValue("");
+        }
+        return;
+    }
 
     return <PostPresenter 
         user={user}
@@ -45,6 +83,8 @@ const PostContainer = ({
         setIsLiked={setIsLiked}
         setLikeCount={setLikeCount}
         currentItem={currentItem}
+        toggleLike={toggleLike}
+        onKeyPress={onKeyPress}
     />
 };
 
@@ -70,9 +110,9 @@ PostContainer.propTypes = {
             user:PropTypes.shape({
                 id:PropTypes.string.isRequired,
                 name:PropTypes.string.isRequired,
-                })      
-        }).isRequred,
-    ).isRequired,    
+                }).isRequred
+        })
+    ).isRequired,
     caption:PropTypes.string.isRequired,
     location:PropTypes.string,
     createdAt:PropTypes.string.isRequired

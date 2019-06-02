@@ -19,7 +19,7 @@ const getSize = size => {
 
 const Container = styled.div`
   ${props => getSize(props.size)}
-  background-image:url(${props => props.url['avatar']});
+  background-image:url(${props => props.url});
   background-size:cover;
   border-radius:50%;
 `;
