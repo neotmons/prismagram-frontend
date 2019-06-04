@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
-import { useMutation } from "react-apollo-hooks";
+import { useMutation, useQuery } from "react-apollo-hooks";
 import useInput from "../../Hooks/useInput";
 import PostPresenter from "./PostPresenter";
 import { TOGGLE_LIKE, ADD_COMMENT} from "./PostQueries";
 import { toast } from "react-toastify";
+import { ME } from "../../SharedQueries";
 
 const PostContainer = ({
     id, 
@@ -20,7 +21,10 @@ const PostContainer = ({
         const [isLikedS, setIsLiked] = useState(isLiked);
         const [likeCountS, setLikeCount] = useState(likeCount);
         const [currentItem, setCurrentItem ] = useState(0);
+        const [selfComments, setSelfComments] = useState([]);
+
         const comment = useInput("");
+        const { data: meQuery } = useQuery(ME);
 
         const toggleLikeMutation = useMutation(TOGGLE_LIKE, {
             variables: {postId: id}});
@@ -28,7 +32,24 @@ const PostContainer = ({
             variables: {postId: id, text: comment.value }
         });
         
+        const slideNext = () => {
+            const totalFiles = files.length;
+            if (currentItem === totalFiles - 1) {
+              setCurrentItem(0);
+            } else {
+              setCurrentItem(currentItem + 1);
+            }
+          };
 
+          const slidePrev = () => {
+            const totalFiles = files.length;
+            if (currentItem === 0) {
+              setCurrentItem(totalFiles - 1);
+            } else {
+              setCurrentItem(currentItem - 1);
+            }
+          };
+/**
         const slide = () => {
             const totalFiles = files.length;
             if(currentItem === totalFiles-1){
@@ -37,11 +58,11 @@ const PostContainer = ({
                 setTimeout(() =>setCurrentItem(currentItem + 1), 3000);
             }
         };
-
+ 
         useEffect(() => {
             slide();
         }, [currentItem]);
-
+*/
         const toggleLike = async() => {
             if(isLikedS === true){
                 setIsLiked(false);                
@@ -61,11 +82,20 @@ const PostContainer = ({
         }
 
 
-    const onKeyPress = e => {
-        const {keyCode} = e;
-        e.preventDefault();
-        if(keyCode === 13){            
+    const onKeyPress = event => {
+        const {which} = event;
+        if(which === 13){            
+            event.preventDefault();
             comment.setValue("");
+            setSelfComments([
+                ...selfComments, 
+                {
+                    id:Math.floor(Math.random()* 100), 
+                    text:comment.value, 
+                    user: {name: meQuery.name
+                }
+            }]);
+            //addCommentMutation();
         }
         return;
     }
@@ -83,8 +113,11 @@ const PostContainer = ({
         setIsLiked={setIsLiked}
         setLikeCount={setLikeCount}
         currentItem={currentItem}
+        slidePrev={slidePrev}
+        slideNext={slideNext}
         toggleLike={toggleLike}
         onKeyPress={onKeyPress}
+        selfComments={selfComments}
     />
 };
 

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import TextareaAutosize from 'react-autosize-textarea';
 import FatText from "../FatText";
 import Avatar from "../Avatar"
-import { HeartFull, HeartEmpty, Comment as CommenIcon } from "../Icons";
+import { HeartFull, HeartEmpty, Prev, Next, Comment as CommenIcon } from "../Icons";
 
 const Post = styled.div`
     ${props => props.theme.whiteBox};
@@ -63,6 +63,14 @@ const Meta = styled.div`
     padding: 15px;
 `;
 
+const SlideButton = styled.div`
+    cursor: pointer;
+    position: absolute;
+    top: 50%
+    ${props => (props.type === "prev" ? "left: 10px" : "right: 10px")};
+    opacity: 0.7;
+`;
+
 const Buttons = styled.div`
     ${Button} {
         &:first-child {
@@ -93,8 +101,15 @@ const Textarea = styled(TextareaAutosize)`
     }
 `;
 
-const Comment = styled.div`
+const Comments = styled.ul`
+    margin-top: 10px;
+`;
 
+const Comment = styled.li`
+    margin-bottom: 7px;
+    span {
+       margin-right: 5px;
+    }
 `;
 
 
@@ -107,9 +122,12 @@ export default ({
     createdAt,
     newComment,
     currentItem,
+    slidePrev,
+    slideNext,
     toggleLike,
     onKeyPress,
     comments,
+    selfComments,
      }) => (
     <Post>
         <Header>
@@ -122,6 +140,16 @@ export default ({
         </Header>
         <Files>
             {files && files.map((file, index) => <File key={file.id} src={file.url} showing={index === currentItem}/>)}
+            {files && files.length > 1 && (
+                <>
+                <SlideButton type="prev" onClick={slidePrev}>
+                    <Prev />
+                </SlideButton>
+                <SlideButton type="next" onClick={slideNext}>
+                    <Next />
+                </SlideButton>
+                </>
+            )}
         </Files>
         <Meta>
         <Buttons>
@@ -129,20 +157,30 @@ export default ({
             <Button><CommenIcon /></Button>
         </Buttons>
         <FatText text={likeCount === 1 ? "1 like": `${likeCount} likes`} />
-        {comments && 
-            comments.map(comment => 
-            <Comment>
-                <FatText text={comment.user.name} />
-                {comment.text}
-            </Comment>
-        )}
+        {comments && (
+            <Comments>
+                {comments.map(comment => (
+                    <Comment>
+                        <FatText text={comment.user.name} />
+                        {comment.text}
+                    </Comment>
+                ))}
+                {selfComments.map(comment => (
+                    <Comment>
+                        <FatText text={comment.user.name} />
+                        {comment.text}
+                    </Comment>
+                ))}
+            </Comments>                
+        )}           
         <Timestamp>{ createdAt }</Timestamp>
         <form>
             <Textarea
+                onKeyPress={onKeyPress}
                 placeholder="Add a comment..."
                 value={newComment.value}
                 onChange={newComment.onChange}
-                onKeyDown={onKeyPress}/>
+                />
         </form>
         </Meta>
     </Post>
