@@ -82,20 +82,29 @@ const PostContainer = ({
         }
 
 
-    const onKeyPress = event => {
+    const onKeyPress = async(event) => {
         const {which} = event;
         if(which === 13){            
             event.preventDefault();
-            comment.setValue("");
-            setSelfComments([
-                ...selfComments, 
-                {
-                    id:Math.floor(Math.random()* 100), 
-                    text:comment.value, 
-                    user: {name: meQuery.name
-                }
-            }]);
-            //addCommentMutation();
+            
+            try{
+                const {
+                    data: {addComment}
+                } = await addCommentMutation();
+
+                setSelfComments([...selfComments, addComment]);
+                    /**
+                    {
+                        id:Math.floor(Math.random()* 100), 
+                        text:comment.value, 
+                        user: {name: meQuery.me.name
+                        }
+                    }
+                     */
+                comment.setValue("");
+            } catch {
+                toast.error("Can't add comment.");
+            }
         }
         return;
     }

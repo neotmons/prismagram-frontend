@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import TextareaAutosize from 'react-autosize-textarea';
+import moment from 'moment';
 import FatText from "../FatText";
 import Avatar from "../Avatar"
 import { HeartFull, HeartEmpty, Prev, Next, Comment as CommenIcon } from "../Icons";
@@ -167,13 +168,14 @@ export default ({
                 ))}
                 {selfComments.map(comment => (
                     <Comment>
+                        { console.log(comment.user)}
                         <FatText text={comment.user.name} />
                         {comment.text}
                     </Comment>
                 ))}
             </Comments>                
         )}           
-        <Timestamp>{ createdAt }</Timestamp>
+        <Timestamp>{ moment(createdAt).format("YYYY.MM.DD HH:MM") }</Timestamp>
         <form>
             <Textarea
                 onKeyPress={onKeyPress}
