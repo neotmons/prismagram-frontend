@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import {Link, withRouter} from "react-router-dom";
-import { gql } from "apollo-boost";
+//import { gql } from "apollo-boost";
 import Input from "./Input";
-import {Logo, Compass, HeartEmpty, HeartFull, User, Comment} from "./Icons";
+import {Logo, Compass, HeartEmpty, User} from "./Icons";
+//import {Logo, Compass, HeartEmpty, HeartFull, User, Comment} from "./Icons";
 import useInput from "../Hooks/useInput";
 import { useQuery } from "react-apollo-hooks";
 import { ME } from "../SharedQueries";

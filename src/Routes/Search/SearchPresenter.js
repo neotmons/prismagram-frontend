@@ -5,6 +5,8 @@ import PropTypes from "prop-types";
 import Loader from "../../Components/Loader";
 import FatText from "../../Components/FatText";
 import UserCard from "../../Components/UserCard"
+import { comment } from "postcss-selector-parser";
+import SquarePost from "../../Components/SquarePost";
 
 
 const Wrapper = styled.div`
@@ -15,16 +17,23 @@ const Section = styled.div`
     margin-bottom: 50px;
     display: grid;
     grid-gap: 25px;
-    grid-template-columns: repeat(4,1fr);
+    grid-template-columns: repeat(4,160px);
     grid-template-rows: 160px;
     grid-auto-rows:160px;
 `;
+
+const PostSection = styled(Section)`
+grid-template-columns: repeat(4,200px);
+    grid-template-rows: 200px;
+    grid-auto-rows:200px;
+`;
+
 const SearchPresenter = ({ searchTerm, loading, data }) => {
     if(searchTerm === "undefined"){
         return <Wrapper><FatText text={"Search for something"} /></Wrapper>
     } else if (loading === true) {
         return <Wrapper><Loader /></Wrapper>    
-    } else if (data && data.searchUser || data.searchPost){
+    } else if ((data && data.searchUser) || data.searchPost){
         return (
             <Wrapper>
                 <Section>
@@ -38,17 +47,24 @@ const SearchPresenter = ({ searchTerm, loading, data }) => {
                                 isFollowing = {user.isFollowing}
                                 url = {user.avatar}
                                 isSelf = {user.isSelf}
+                                id={user.id}
                             />
                         ))
                     )}
                 </Section>
-                <Section>
+                <PostSection>
                     {data.searchPost.length === 0 ? (
                             <FatText text = {"No photos found"}/>
                         ) : (
-                            data.searchPost.map(post => null)
-                        )}                    
-                </Section>
+                            data.searchPost.map(post => (
+                                <SquarePost 
+                                    key={post.id}
+                                    likeCount={post.likeCount}
+                                    commentCount={post.commentCount}
+                                    file={post.files[0]} />
+                            ))
+                    )}                    
+                </PostSection>
             </Wrapper>
         );
     }    
